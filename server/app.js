@@ -12,8 +12,11 @@ const sessionStore = new SequelizeStore({ db });
 
 const { json, urlencoded } = express;
 
+const cookieParser = require('cookie-parser');
+
 const app = express();
 
+app.use(cookieParser());
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
