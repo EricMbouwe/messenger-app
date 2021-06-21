@@ -23,15 +23,15 @@ router.post('/register', async (req, res, next) => {
 
     const token = jwt.sign(
       { id: user.dataValues.id },
-      process.env.ACCESS_TOKEN_SECRET,
+      process.env.SESSION_SECRET,
       { expiresIn: 86400 },
     );
 
     if (!req.cookies || !req.cookies.secureCookie) {
       res.cookie('secureCookie', token, {
         sameSite: true,
-        secure: process.env.NODE_ENV !== 'development',
-        expires: new Date(new Date().getTime() + 100 * 1000),
+        secure: true,
+        expiresIn: 86400,
         httpOnly: true,
       });
     }
@@ -71,15 +71,15 @@ router.post('/login', async (req, res, next) => {
     } else {
       const token = jwt.sign(
         { id: user.dataValues.id },
-        process.env.ACCESS_TOKEN_SECRET,
+        process.env.SESSION_SECRET,
         { expiresIn: 86400 },
       );
 
       if (!req.cookies || !req.cookies.secureCookie) {
         res.cookie('secureCookie', token, {
           sameSite: true,
-          secure: process.env.NODE_ENV !== 'development',
-          expires: new Date(new Date().getTime() + 100 * 1000),
+          secure: true,
+          expiresIn: 86400,
           httpOnly: true,
         });
       }

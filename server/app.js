@@ -22,12 +22,11 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(express.static(join(__dirname, 'public')));
 
-
 app.use(function (req, res, next) {
-  const token = req.headers['x-access-token'];
+  const token = req?.cookies?.secureCookie;
 
   if (token) {
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
       if (err) {
         return next();
       }
