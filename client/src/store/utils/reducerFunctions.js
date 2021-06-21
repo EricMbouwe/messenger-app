@@ -8,9 +8,8 @@ export const addMessageToStore = (state, payload) => {
       messages: [message],
     };
     newConvo.latestMessageText = message.text;
-    return [...state, newConvo];
+    return [newConvo, ...state];
   }
-  console.log('MESSAGE: ', message);
 
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
