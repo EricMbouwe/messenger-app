@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import { FormControl, FilledInput } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import { postMessage } from "../../store/utils/thunkCreators";
+import React, { Component } from 'react';
+import { FormControl, FilledInput } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { postMessage } from '../../store/utils/thunkCreators';
 
 const styles = {
   root: {
-    justifySelf: "flex-end",
+    justifySelf: 'flex-end',
     marginTop: 15,
   },
   input: {
     height: 70,
-    backgroundColor: "#F4F6FA",
+    backgroundColor: '#F4F6FA',
     borderRadius: 8,
     marginBottom: 20,
   },
@@ -21,7 +21,7 @@ class Input extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: "",
+      text: '',
     };
   }
 
@@ -38,11 +38,11 @@ class Input extends Component {
       text: event.target.text.value,
       recipientId: this.props.otherUser.id,
       conversationId: this.props.conversationId,
-      sender: this.props.conversationId ? null : this.props.user,
+      sender: this.props.conversationId ? this.props.user : null,
     };
     await this.props.postMessage(reqBody);
     this.setState({
-      text: "",
+      text: '',
     });
   };
 
@@ -82,5 +82,5 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(Input));
