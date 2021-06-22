@@ -95,13 +95,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.delete('/logout', (req, res, next) => {
-  res
-    .clearCookie('token', token, {
-      sameSite: true,
-      secure: true,
-      httpOnly: true,
-    })
-    .sendStatus(204);
+  res.clearCookie('token').sendStatus(204);
 });
 
 router.get('/user', (req, res, next) => {
