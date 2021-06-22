@@ -27,8 +27,8 @@ router.post('/register', async (req, res, next) => {
       { expiresIn: 86400 },
     );
 
-    if (!req.cookies || !req.cookies.secureCookie) {
-      res.cookie('secureCookie', token, {
+    if (!req.cookies || !req.cookies.token) {
+      res.cookie('token', token, {
         sameSite: true,
         secure: true,
         expiresIn: 86400,
@@ -75,8 +75,8 @@ router.post('/login', async (req, res, next) => {
         { expiresIn: 86400 },
       );
 
-      if (!req.cookies || !req.cookies.secureCookie) {
-        res.cookie('secureCookie', token, {
+      if (!req.cookies || !req.cookies.token) {
+        res.cookie('token', token, {
           sameSite: true,
           secure: true,
           expiresIn: 86400,
@@ -95,7 +95,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.delete('/logout', (req, res, next) => {
-  res.clearCookie('secureCookie').sendStatus(204);
+  res.clearCookie('token').sendStatus(204);
 });
 
 router.get('/user', (req, res, next) => {
