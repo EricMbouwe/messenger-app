@@ -99,6 +99,18 @@ export const postMessage = (body) => async (dispatch) => {
   }
 };
 
+export const updateReadStatus = async (messageId, conversationId) => {
+  try {
+    const { data } = await axios.put(`/api/messages/${messageId}`, {
+      readStatus: true,
+      conversationId,
+    });
+    console.log('DATA::::', data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const searchUsers = (searchTerm) => async (dispatch) => {
   try {
     const { data } = await axios.get(`/api/users/${searchTerm}`);
