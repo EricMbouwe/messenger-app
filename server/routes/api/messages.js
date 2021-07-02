@@ -60,7 +60,7 @@ router.put('/:messageId', async (req, res, next) => {
     }
 
     // look up the message
-    let message = await Message.findOne({
+    const message = await Message.findOne({
       where: {
         id: req.params.messageId,
         conversationId: req.body.conversationId,
@@ -73,7 +73,7 @@ router.put('/:messageId', async (req, res, next) => {
     }
 
     // update the message
-    message = await Message.update(
+    const messages = await Message.update(
       { readStatus: req.body.readStatus },
       {
         returning: true,
@@ -86,7 +86,7 @@ router.put('/:messageId', async (req, res, next) => {
       },
     );
 
-    res.send(message[1]);
+    res.send(messages[1]);
   } catch (error) {
     next(error);
   }

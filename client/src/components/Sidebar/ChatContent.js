@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, Typography, Badge } from '@material-ui/core';
-//import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,9 +40,24 @@ const ChatContent = (props) => {
   const { conversation, user } = props;
   const { latestMessageText, otherUser, messages } = conversation;
 
-  const unReadMessages = messages.filter(
-    (msg) => msg.readStatus === false && msg.senderId !== user.id,
-  ).length;
+  const unReadMessages = useMemo(() => {
+    console.log('unread claculated');
+    return messages.filter(
+      (msg) => msg.readStatus === false && msg.senderId !== user.id,
+    ).length;
+  }, [messages]);
+
+  /*const unReadMessages = () => {
+    console.log('unread claculated');
+    return messages.filter(
+      (msg) => msg.readStatus === false && msg.senderId !== user.id,
+    ).length;
+  };*/
+
+  /*const unReadMessages = messages.filter(
+      (msg) => msg.readStatus === false && msg.senderId !== user.id,
+    ).length;
+  };*/
 
   return (
     <Box className={classes.root}>

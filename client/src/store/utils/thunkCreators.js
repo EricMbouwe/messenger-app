@@ -101,11 +101,10 @@ export const postMessage = (body) => async (dispatch) => {
 
 export const updateReadStatus = async (messageId, conversationId) => {
   try {
-    const { data } = await axios.put(`/api/messages/${messageId}`, {
+    await axios.put(`/api/messages/${messageId}`, {
       readStatus: true,
       conversationId,
     });
-    console.log('DATA::::', data);
   } catch (error) {
     console.error(error);
   }

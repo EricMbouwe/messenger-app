@@ -26,22 +26,19 @@ class Chat extends Component {
     await this.messageRead();
   };
 
-  clickChatWhereNotSender = () =>
+  lastMessageFromOtherUser = () =>
     this.props.conversation.messages[
       this.props.conversation.messages.length - 1
     ].senderId !== this.props.user.id;
 
   messageRead = async () => {
-    if (this.clickChatWhereNotSender()) {
+    if (this.lastMessageFromOtherUser()) {
       await updateReadStatus(
         this.props.conversation.messages[
           this.props.conversation.messages.length - 1
         ].id,
         this.props.conversation.id,
       );
-      console.log('Not the sender');
-    } else {
-      console.log('You are the sender of this message');
     }
   };
 
