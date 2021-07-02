@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Badge } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -17,6 +17,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 12,
     color: '#9CADC8',
     letterSpacing: -0.17,
+  },
+  unreadPreviewText: {
+    fontSize: 12,
+    color: '#9CADC8',
+    letterSpacing: -0.17,
+    fontWeight: 'bold',
   },
   notification: {
     height: 20,
@@ -39,38 +45,32 @@ const ChatContent = (props) => {
 
   const { conversation, user } = props;
   const { latestMessageText, otherUser, messages } = conversation;
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  const unReadMessages = useMemo(() => {
-    console.log('unread claculated');
-    return messages.filter(
-      (msg) => msg.readStatus === false && msg.senderId !== user.id,
-    ).length;
+  useEffect(() => {
+    setUnreadCount(
+      messages.filter(
+        (msg) => msg.readStatus === false && msg.senderId !== user.id,
+      ).length,
+    );
   }, [messages]);
-
-  /*const unReadMessages = () => {
-    console.log('unread claculated');
-    return messages.filter(
-      (msg) => msg.readStatus === false && msg.senderId !== user.id,
-    ).length;
-  };*/
-
-  /*const unReadMessages = messages.filter(
-      (msg) => msg.readStatus === false && msg.senderId !== user.id,
-    ).length;
-  };*/
 
   return (
     <Box className={classes.root}>
-      <Badge badgeContent={unReadMessages} color="primary" max={999} showZero>
-        <Box>
-          <Typography className={classes.username}>
-            {otherUser.username}
-          </Typography>
-          <Typography className={classes.previewText}>
-            {latestMessageText}
-          </Typography>
-        </Box>
-      </Badge>
+      <Box>
+        <Typography className={classes.username}>
+          {otherUser.username}
+        </Typography>
+        <Typography className={unreadCount > 0 ? classes.unreadPreviewText : classes.previewText}>
+          {latestMessageText}
+        </Typography>
+      </Box>
+      <Badge
+        className={classes.notification}
+        badgeContent={unreadCount}
+        color="primary"
+        max={999}
+      />
     </Box>
   );
 };
