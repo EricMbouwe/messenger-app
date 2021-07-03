@@ -1,35 +1,41 @@
-import React from "react";
-import { Box, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useState } from 'react';
+import { Box, Typography, Badge } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     marginLeft: 20,
     flexGrow: 1,
   },
   username: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     letterSpacing: -0.2,
   },
   previewText: {
     fontSize: 12,
-    color: "#9CADC8",
+    color: '#9CADC8',
     letterSpacing: -0.17,
+  },
+  unreadPreviewText: {
+    fontSize: 12,
+    color: '#9CADC8',
+    letterSpacing: -0.17,
+    fontWeight: 'bold',
   },
   notification: {
     height: 20,
     width: 20,
-    backgroundColor: "#3F92FF",
+    backgroundColor: '#3F92FF',
     marginRight: 10,
-    color: "white",
+    color: 'white',
     fontSize: 10,
     letterSpacing: -0.5,
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 10,
   },
 }));
@@ -37,8 +43,17 @@ const useStyles = makeStyles((theme) => ({
 const ChatContent = (props) => {
   const classes = useStyles();
 
-  const { conversation } = props;
-  const { latestMessageText, otherUser } = conversation;
+  const { conversation, user } = props;
+  const { latestMessageText, otherUser, messages } = conversation;
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    setUnreadCount(
+      messages.filter(
+        (msg) => msg.readStatus === false && msg.senderId !== user.id,
+      ).length,
+    );
+  }, [messages]);
 
   return (
     <Box className={classes.root}>
@@ -46,10 +61,16 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
+        <Typography className={unreadCount > 0 ? classes.unreadPreviewText : classes.previewText}>
           {latestMessageText}
         </Typography>
       </Box>
+      <Badge
+        className={classes.notification}
+        badgeContent={unreadCount}
+        color="primary"
+        max={999}
+      />
     </Box>
   );
 };

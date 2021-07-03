@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { Conversation, Message } = require('../../db/models');
+const { Op } = require('sequelize');
 const onlineUsers = require('../../onlineUsers');
 
 // expects {recipientId, text, conversationId } in body (conversationId will be null if no conversation exists yet)
@@ -18,7 +19,12 @@ router.post('/', async (req, res, next) => {
 
     // if we already know conversation id, we can save time and just add it to message and return
     if (conversationId === conversation.id) {
-      const message = await Message.create({ senderId, text, conversationId });
+      const message = await Message.create({
+        senderId,
+        text,
+        conversationId,
+        readStatus: false,
+      });
       return res.json({ message, sender });
     } else if (conversationId !== conversation.id) {
       return res.sendStatus(401);
@@ -39,8 +45,48 @@ router.post('/', async (req, res, next) => {
       senderId,
       text,
       conversationId: conversation.id,
+      readStatus: false,
     });
     res.json({ message, sender });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put('/:messageId', async (req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+
+    // look up the message
+    const message = await Message.findOne({
+      where: {
+        id: req.params.messageId,
+        conversationId: req.body.conversationId,
+      },
+    });
+
+    // if not existing return 404
+    if (!message) {
+      res.status(404).send('The message with the given id was not found');
+    }
+
+    // update the message
+    const messages = await Message.update(
+      { readStatus: req.body.readStatus },
+      {
+        returning: true,
+        where: {
+          senderId: {
+            [Op.not]: req.user.id,
+          },
+          conversationId: req.body.conversationId,
+        },
+      },
+    );
+
+    res.send(messages[1]);
   } catch (error) {
     next(error);
   }
