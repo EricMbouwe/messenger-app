@@ -53,7 +53,7 @@ const ChatContent = (props) => {
         (msg) => msg.readStatus === false && msg.senderId !== user.id,
       ).length,
     );
-  }, [messages]);
+  }, [messages, user]);
 
   return (
     <Box className={classes.root}>
