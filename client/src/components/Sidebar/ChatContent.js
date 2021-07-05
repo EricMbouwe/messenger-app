@@ -48,11 +48,11 @@ const ChatContent = (props) => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    setUnreadCount(
-      messages.filter(
-        (msg) => msg.readStatus === false && msg.senderId !== user.id,
-      ).length,
-    );
+    const count = messages.filter(
+      (msg) => msg.readStatus === false && msg.senderId !== user.id,
+    ).length;
+
+    setUnreadCount(count);
   }, [messages, user.id]);
 
   return (
