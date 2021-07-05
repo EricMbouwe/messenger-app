@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Badge } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginLeft: 20,
     flexGrow: 1,
   },
@@ -20,15 +21,14 @@ const useStyles = makeStyles((theme) => ({
   },
   unreadPreviewText: {
     fontSize: 12,
-    color: '#9CADC8',
     letterSpacing: -0.17,
-    fontWeight: 'bold',
+    fontWeight: '900',
   },
   notification: {
     height: 20,
     width: 20,
     backgroundColor: '#3F92FF',
-    marginRight: 10,
+    marginRight: 20,
     color: 'white',
     fontSize: 10,
     letterSpacing: -0.5,
@@ -53,7 +53,7 @@ const ChatContent = (props) => {
         (msg) => msg.readStatus === false && msg.senderId !== user.id,
       ).length,
     );
-  }, [messages, user]);
+  }, [messages, user.id]);
 
   return (
     <Box className={classes.root}>
@@ -61,16 +61,14 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={unreadCount > 0 ? classes.unreadPreviewText : classes.previewText}>
+        <Typography className={unreadCount > 0 ? classes.unreadPreviewText : classes.previewText }>
           {latestMessageText}
         </Typography>
       </Box>
-      <Badge
-        className={classes.notification}
-        badgeContent={unreadCount}
-        color="primary"
-        max={999}
-      />
+      {unreadCount > 0 && (
+      <Box className={classes.notification}>
+          {unreadCount}
+      </Box>)}
     </Box>
   );
 };
