@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -45,15 +44,10 @@ const ChatContent = (props) => {
 
   const { conversation, user } = props;
   const { latestMessageText, otherUser, messages } = conversation;
-  const [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    const count = messages.filter(
-      (msg) => msg.readStatus === false && msg.senderId !== user.id,
-    ).length;
-
-    setUnreadCount(count);
-  }, [messages, user.id]);
+  const unreadCount = messages.filter(
+    (msg) => msg.readStatus === false && msg.senderId !== user.id,
+  ).length;
 
   return (
     <Box className={classes.root}>
