@@ -53,26 +53,25 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.put('/:messageId', async (req, res, next) => {
+router.put('/:conversationId', async (req, res, next) => {
   try {
     if (!req.user) {
       return res.sendStatus(401);
     }
 
-    // look up the message
-    const message = await Message.findOne({
+    // look up the conversation
+    const conversation = await Conversation.findOne({
       where: {
-        id: req.params.messageId,
-        conversationId: req.body.conversationId,
+        id: req.params.conversationId,
       },
     });
 
     // if not existing return 404
-    if (!message) {
+    if (!conversation) {
       res.status(404).send('The message with the given id was not found');
     }
 
-    // update the message
+    // update the conversation's messages
     const messages = await Message.update(
       { readStatus: req.body.readStatus },
       {
@@ -81,7 +80,7 @@ router.put('/:messageId', async (req, res, next) => {
           senderId: {
             [Op.not]: req.user.id,
           },
-          conversationId: req.body.conversationId,
+          conversationId: req.params.conversationId,
         },
       },
     );

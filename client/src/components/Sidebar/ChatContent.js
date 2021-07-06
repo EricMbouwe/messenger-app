@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -7,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: 20,
+    marginLeft: theme.spacing(2.5),
     flexGrow: 1,
   },
   username: {
@@ -16,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   previewText: {
     fontSize: 12,
-    color: '#9CADC8',
+    color: theme.palette.primary.previewText,
     letterSpacing: -0.17,
   },
   unreadPreviewText: {
@@ -27,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
   notification: {
     height: 20,
     width: 20,
-    backgroundColor: '#3F92FF',
-    marginRight: 20,
+    backgroundColor: theme.palette.primary.background,
+    marginRight: theme.spacing(2.5),
     color: 'white',
     fontSize: 10,
     letterSpacing: -0.5,
@@ -45,15 +44,10 @@ const ChatContent = (props) => {
 
   const { conversation, user } = props;
   const { latestMessageText, otherUser, messages } = conversation;
-  const [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    const count = messages.filter(
-      (msg) => msg.readStatus === false && msg.senderId !== user.id,
-    ).length;
-
-    setUnreadCount(count);
-  }, [messages, user.id]);
+  const unreadCount = messages.filter(
+    (msg) => msg.readStatus === false && msg.senderId !== user.id,
+  ).length;
 
   return (
     <Box className={classes.root}>

@@ -33,12 +33,7 @@ class Chat extends Component {
 
   messageRead = async () => {
     if (this.lastMessageFromOtherUser()) {
-      await updateReadStatus(
-        this.props.conversation.messages[
-          this.props.conversation.messages.length - 1
-        ].id,
-        this.props.conversation.id,
-      );
+      await updateReadStatus(this.props.conversation.id);
     }
   };
 
