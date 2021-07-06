@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginLeft: 20,
+    marginLeft: theme.spacing(2.5),
     flexGrow: 1,
   },
   username: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   previewText: {
     fontSize: 12,
-    color: '#9CADC8',
+    color: theme.palette.primary.previewText,
     letterSpacing: -0.17,
   },
   unreadPreviewText: {
@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
   notification: {
     height: 20,
     width: 20,
-    backgroundColor: '#3F92FF',
-    marginRight: 20,
+    backgroundColor: theme.palette.primary.background,
+    marginRight: theme.spacing(2.5),
     color: 'white',
     fontSize: 10,
     letterSpacing: -0.5,
